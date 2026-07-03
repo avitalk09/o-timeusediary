@@ -2417,6 +2417,26 @@ async function init() {
 
         // Now sync URL parameters so they are stored in timelineManager.study
         syncURLParamsToStudy();
+        // --- Load settings & initialize i18n FIRST, so the email modal
+        // (and everything else) renders in the correct language from the start ---
+        const response = await fetch('settings/activities.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        // Save global configuration
+        window.timelineManager.general = data.general;
+        applyAccessibilityConfig(data.general?.accessibility);
+        initAccessibilityDemoShortcut();
+        initAccessibilityToggleButton();
+
+        // Initialize i18n (internationalization) system
+        const language = data.general.language || 'en';
+        await i18n.init(language);
+
+        // Apply translations to existing elements (including the email modal below)
+        i18n.applyTranslations();
 
         // --- Email collection ---
         // If the email was already passed via URL (e.g. from instructions page) skip the modal.
@@ -2482,26 +2502,6 @@ async function init() {
         // (Rest of your initialization code...)
         checkAndRequestPID();
         preventPullToRefresh();
-
-        // Load initial timeline data and do the rest of the setup.
-        const response = await fetch('settings/activities.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-
-        // Save global configuration
-        window.timelineManager.general = data.general;
-        applyAccessibilityConfig(data.general?.accessibility);
-        initAccessibilityDemoShortcut();
-        initAccessibilityToggleButton();
-
-        // Initialize i18n (internationalization) system
-        const language = data.general.language || 'en';
-        await i18n.init(language);
-        
-        // Apply translations to existing elements
-        i18n.applyTranslations();
 
         // Handle instructions or redirection if needed.
         const urlParams = new URLSearchParams(window.location.search);
