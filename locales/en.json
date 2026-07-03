@@ -20,7 +20,13 @@
     "helpfulTools": "Helpful tools",
     "undoHelp": "Did you make a mistake? Reverse your last action",
     "cleanRowHelp": "Want to start over? Clean the row",
-    "customActivityHelp": "Activity not listed? Add a custom activity"
+    "customActivityHelp": "Activity not listed? Add a custom activity",
+    "email": {
+      "label": "Email address",
+      "placeholder": "name@example.com",
+      "note": "Your responses will be linked to this email address and will not be anonymous.",
+      "error": "Please enter a valid email address."
+    }
   },
   "buttons": {
     "submit": "Submit",
