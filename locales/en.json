@@ -84,5 +84,14 @@
     "heading": "Thank You!",
     "subtitle": "Your submission has been completed successfully.",
     "message": "Thank you for participating in our <span class=\"app-name\">O-TUD</span> study. Your responses have been recorded and will contribute to valuable research."
+  },
+  "email": {
+    "modal": {
+      "title": "Before you begin",
+      "note": "Please enter your email address. Your responses will be linked to it and will not be anonymous.",
+      "placeholder": "name@example.com",
+      "error": "Please enter a valid email address.",
+      "confirm": "Start"
+    }
   }
 }
