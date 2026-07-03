@@ -537,6 +537,7 @@ export async function sendDataToDataPipe() {
       browserName: browserInfo.name,
       browserVersion: browserInfo.version,
       instructions: studyData.instructions === 'completed',
+      email: studyData.email || null,
       PROLIFIC_PID: studyData.PROLIFIC_PID || null,
       STUDY_ID: studyData.STUDY_ID || null,
       SESSION_ID: session_id
