@@ -2418,6 +2418,67 @@ async function init() {
         // Now sync URL parameters so they are stored in timelineManager.study
         syncURLParamsToStudy();
 
+        // --- Email collection ---
+        // If the email was already passed via URL (e.g. from instructions page) skip the modal.
+        // Otherwise show the modal and wait for the user to confirm before continuing.
+        await (function collectEmail() {
+            return new Promise((resolve) => {
+                const overlay   = document.getElementById('emailModalOverlay');
+                const input     = document.getElementById('emailModalInput');
+                const confirmBtn = document.getElementById('emailModalConfirm');
+                const errorMsg  = document.getElementById('emailModalError');
+                const chip      = document.getElementById('emailHeaderChip');
+                const EMAIL_RE  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                function applyEmail(email) {
+                    window.timelineManager.study.email = email;
+                    if (chip) {
+                        chip.textContent = email;
+                        chip.style.display = '';
+                    }
+                }
+
+                // If email already in study (from URL param), skip modal
+                const existingEmail = window.timelineManager.study?.email;
+                if (existingEmail && EMAIL_RE.test(existingEmail)) {
+                    if (overlay) overlay.style.display = 'none';
+                    applyEmail(existingEmail);
+                    return resolve();
+                }
+
+                // Show modal and wait
+                if (!overlay || !input || !confirmBtn) return resolve(); // safety fallback
+
+                overlay.style.display = 'flex';
+                setTimeout(() => input.focus(), 100);
+
+                confirmBtn.addEventListener('click', function onConfirm() {
+                    const value = input.value.trim();
+                    if (!EMAIL_RE.test(value)) {
+                        input.style.borderColor = '#dc2626';
+                        if (errorMsg) errorMsg.style.display = '';
+                        input.focus();
+                        return;
+                    }
+                    input.style.borderColor = '';
+                    if (errorMsg) errorMsg.style.display = 'none';
+                    overlay.style.display = 'none';
+                    applyEmail(value);
+                    confirmBtn.removeEventListener('click', onConfirm);
+                    resolve();
+                });
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') confirmBtn.click();
+                });
+
+                input.addEventListener('input', () => {
+                    input.style.borderColor = '';
+                    if (errorMsg) errorMsg.style.display = 'none';
+                });
+            });
+        })();
+
         // (Rest of your initialization code...)
         checkAndRequestPID();
         preventPullToRefresh();
