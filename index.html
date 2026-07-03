@@ -70,6 +70,9 @@
             <h1 class="timeline-title">Primary Activity</h1>
             <p class="timeline-description"></p>
         </div>
+
+        <!-- Small email badge shown after the modal is confirmed -->
+        <div id="emailHeaderChip" class="email-header-chip" style="display:none;" aria-label="Participant email"></div>
     </header>
 
     <main id="main-timeline" role="main">
@@ -86,6 +89,30 @@
         <div class="activities-accordion"></div>
     </aside>
     
+    <!-- Email collection modal (shown on first load, before diary starts) -->
+    <div id="emailModalOverlay" class="modal-overlay" style="display: flex;" role="dialog" aria-modal="true" aria-labelledby="emailModalTitle">
+        <div class="modal" id="emailModal">
+            <div class="modal-content" style="text-align: left;">
+                <h3 id="emailModalTitle" data-i18n="email.modal.title">Before you begin</h3>
+                <p data-i18n="email.modal.note">Please enter your email address. Your responses will be linked to it and will not be anonymous.</p>
+                <input
+                    type="email"
+                    id="emailModalInput"
+                    inputmode="email"
+                    autocomplete="email"
+                    data-i18n-placeholder="email.modal.placeholder"
+                    placeholder="name@example.com"
+                    style="width:100%; box-sizing:border-box; padding:10px 12px; font-size:15px; border:1px solid #e2e8f0; border-radius:6px; margin-bottom:6px;"
+                    aria-describedby="emailModalError"
+                />
+                <p id="emailModalError" style="color:#dc2626; font-size:12px; margin:0 0 12px 0; display:none;" data-i18n="email.modal.error">Please enter a valid email address.</p>
+                <div class="button-container">
+                    <button id="emailModalConfirm" class="btn save-btn" data-i18n="email.modal.confirm">Start</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Debug overlay element -->
     <div id="debugOverlay" class="debugOverlay"></div>
 
