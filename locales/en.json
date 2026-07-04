@@ -24,7 +24,7 @@
     "email": {
       "label": "Email address",
       "placeholder": "name@example.com",
-      "note": "Your responses will be linked to this email address and will not be anonymous.",
+      "note": "",
       "error": "Please enter a valid email address."
     }
   },
@@ -88,7 +88,7 @@
   "email": {
     "modal": {
       "title": "Before you begin",
-      "note": "Please enter your email address. Your responses will be linked to it and will not be anonymous.",
+      "note": "Please enter your email address.",
       "placeholder": "name@example.com",
       "error": "Please enter a valid email address.",
       "confirm": "Start"
