@@ -2465,9 +2465,6 @@ async function init() {
             return;
         }
 
-        // We're staying on this page — safe to show it now
-        document.body.style.visibility = '';
-
         // --- Email collection modal ---
         // Show a centered modal asking for email before the diary becomes interactive.
         // Skipped if email is already in sessionStorage (i.e. user refreshed the page).
