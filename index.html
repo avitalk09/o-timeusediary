@@ -20,7 +20,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="styles/styles.css">
-    <style>body { visibility: hidden; }</style>
+    <script>
+        // Runs synchronously before any rendering — prevents flash of main page
+        // before instructions. Uses sessionStorage so refresh works correctly.
+        (function () {
+            var p = new URLSearchParams(location.search);
+            var done = p.has('instructions') || sessionStorage.getItem('instructionsDone');
+            if (!done) {
+                var base = location.href.split('?')[0].replace(/\/[^\/]*$/, '/');
+                location.replace(base + 'pages/instructions.html' + (location.search ? location.search : ''));
+            } else {
+                sessionStorage.setItem('instructionsDone', '1');
+            }
+        })();
+    </script>
 </head>
 <body>
     <a href="#main-timeline" class="skip-link">Skip to timeline</a>
