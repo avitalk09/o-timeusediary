@@ -2465,9 +2465,12 @@ async function init() {
             return;
         }
 
+        // We're staying on this page — safe to show it now
+        document.body.style.visibility = '';
+
         // --- Email collection modal ---
         // Show a centered modal asking for email before the diary becomes interactive.
-        // Resolves immediately if the email was already supplied via a URL param.
+        // Skipped if email is already in sessionStorage (i.e. user refreshed the page).
         await new Promise((resolve) => {
             const overlay    = document.getElementById('emailModalOverlay');
             const input      = document.getElementById('emailModalInput');
@@ -2478,10 +2481,18 @@ async function init() {
 
             function applyEmail(email) {
                 window.timelineManager.study.email = email;
+                sessionStorage.setItem('participantEmail', email);
                 if (chip) { chip.textContent = email; chip.style.display = ''; }
             }
 
-            // Skip modal if email already came in via URL param (e.g. from instructions page)
+            // Check sessionStorage first (survives refresh, cleared when tab closes)
+            const stored = sessionStorage.getItem('participantEmail');
+            if (stored && EMAIL_RE.test(stored)) {
+                applyEmail(stored);
+                return resolve();
+            }
+
+            // Also accept email from URL param (future-proofing)
             const existing = window.timelineManager.study?.email;
             if (existing && EMAIL_RE.test(existing)) {
                 applyEmail(existing);
